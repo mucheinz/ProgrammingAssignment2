@@ -10,30 +10,30 @@
 
 ## create matrix and define functions for inversion
 makeCacheMatrix <- function(x = matrix()) {
-  myvar <- NULL
+  myvar <- NULL			
   make <- function(y) {
           x <<- y
-          myvar <<- NULL
+          myvar <<- NULL	# initialize inverse matrix
   }
   read <- function() x
-  makeinverse <- function(inverse) myvar <<- inverse
-  readinverse <- function() myvar
+  makeinverse <- function(inverse) myvar <<- inverse	# create inverse matrix
+  readinverse <- function() myvar			# retrieve inverse matrix
   list(make = make,
        read = read,
        makeinverse = makeinverse,
-       readinverse = readinverse)
+       readinverse = readinverse)			# get the list
 }
 
 ## Return a matrix that is the inverse of 'x'
 ## test and retrieve cached data if exists
-cacheSolve <- function(x, ...) {
-  myvar <- x$readinverse()
-  if (!is.null(myvar)) {
+cacheSolve <- function(x, ...) {	# makeCacheMatrix as input
+  myvar <- x$readinverse()		# myvar is NULL if not cached
+  if (!is.null(myvar)) {		# test if previously calculated
           message("retrieving previously stored data")
           return(myvar)
   }
-  data <- x$read()
-  myvar <- solve(data, ...)
-  x$makeinverse(myvar)
+  data <- x$read()		# if not then ...
+  myvar <- solve(data, ...)	# calculate the matrix inverse
+  x$makeinverse(myvar)		# and store
   myvar
 }
